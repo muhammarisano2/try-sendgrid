@@ -5,6 +5,9 @@ const express = require('express');
 const app = express()
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+
+// use sendgrid
+// daftar akun di https://sendgrid.com/ untuk dapatkan API key nya
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
@@ -23,6 +26,7 @@ app.listen(port, () => {
 app.post('/email', async(req, res) => {
     const { email, subject } = req.body
     const number = '82321321'
+    // configuration inbox sendgrid
     const msg = {
         to: email,
         from: 'rinoboy84@gmail.com ',
@@ -31,6 +35,7 @@ app.post('/email', async(req, res) => {
         html: `<strong>https://cobasendgrit.com/resetpassword?code=${number}</strong>`,
     };
 
+    // send email with sendgrid
     await sgMail.send(msg)
     .then(()=>{
         res.status(200).json({
